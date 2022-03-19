@@ -3,9 +3,10 @@ const Schema = mongoose.Schema
 
 export const CommentSchema = new Schema(
   {
-    title: { type: String, required: true },
-    description: { type: String, required: true },
-    creatorId: { type: Schema.Types.ObjectId, ref: 'Profile', required: true }
+    eventId: { type: Schema.Types.ObjectId, required: true, ref: 'Event' },
+    creatorId: { type: Schema.Types.ObjectId, ref: 'Profile', required: true },
+    body: { type: String, required: true }
+
   },
   { timestamps: true, toJSON: { virtuals: true } }
 )

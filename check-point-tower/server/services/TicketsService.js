@@ -1,4 +1,5 @@
 import { dbContext } from '../db/DbContext'
+import { Forbidden } from '../utils/Errors'
 // import { BadRequest } from '../utils/Errors'
 
 class TicketsService {
@@ -28,6 +29,14 @@ class TicketsService {
         ...attendeeTicket.attendee
       }
     })
+  }
+
+  async removeTicket(ticketId, userId) {
+    const ticketToDelete = await dbContext.Tickets.findById(ticketId)
+    if (ticketToDelete.creatorId.toString() !== userId) {
+      throw new Forbidden('You are not the creator.')
+    }
+    await dbContext.Tickets.findByIdAndDelete(ticketId)
   }
 }
 export const ticketsService = new TicketsService()
