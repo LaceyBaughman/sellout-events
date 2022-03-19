@@ -37,6 +37,12 @@ class EventsService {
     await originalEvent.populate('creator', 'name')
     return originalEvent
   }
-}
 
+  async softCancel(id) {
+    const originalEvent = await dbContext.Events.findById(id)
+    originalEvent.isCanceled = !originalEvent.isCanceled
+    await originalEvent.save()
+    return originalEvent.isCanceled ? 'Canceled' : 'UnCanceled'
+  }
+}
 export const eventsService = new EventsService()

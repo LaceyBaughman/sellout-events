@@ -13,7 +13,7 @@ export class EventsController extends BaseController {
       .get('/:id', this.getEventsById)
       .post('', this.createEvent)
       .put('/:id', this.editEvent)
-    // .delete('/:id', this.removeProject)
+      .delete('/:id', this.softCancel)
   }
 
   async createEvent(req, res, next) {
@@ -57,5 +57,14 @@ export class EventsController extends BaseController {
       next(error)
     }
     throw new Error('Unable to Edit Event')
+  }
+
+  async softCancel(req, res, next) {
+    try {
+      const cancel = await eventsService.softCancel(req.params.id)
+      return res.send(cancel)
+    } catch (error) {
+      next(error)
+    }
   }
 }
