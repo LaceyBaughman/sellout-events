@@ -1,16 +1,32 @@
-CodeWorks Vue Starter
-=====================
-This template is designed to help get students started building vue applications
+ <div class="col d-flex justify-content-around">
+          <button class="btn btn-color" onclick="filter('priority')">Priority</button>
+          <button class="btn btn-color" onclick="filter('heavy')">Heavy</button>
+          <button class="btn btn-color" onclick="filter('fragile')">Fragile</button>
+          <button class="btn btn-color" onclick="filter('brand')">Brand</button>
 
-## Legal Overview
-
-The content under the CodeWorks®, LLC Organization and all of the individual repos are solely intended for use by CodeWorks Instruction to deliver Educational content to CodeWorks Students.
-
----
-
-## Copyright
-
-© CodeWorks® LLC, 2021. Unauthorized use and/or duplication of this material without express and written permission from CodeWorks, LLC is strictly prohibited.
+          function filter(filteredProperty) {
+  let lostPackage = packages.find(package => package.lost)
+  search = search.filter(package => package[filteredProperty] === lostPackage[filteredProperty])
+  draw()
+}
 
 
-<img src="https://bcw.blob.core.windows.net/public/img/7815839041305055" width="125">
+
+
+<button
+          @click="changePage(older)"
+          class="btn btn-outline-danger me-2"
+          :class="{disabled: !older}"
+          :disabled="!older"
+        >
+          Older Posts
+        </button>
+        <button
+          v-if="newer"
+          @click="changePage(newer)"
+          class="btn btn-outline-danger"
+
+        >
+          Newer Posts
+        </button>
+
