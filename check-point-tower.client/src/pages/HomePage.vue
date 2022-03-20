@@ -1,36 +1,79 @@
 <template>
-  <div class="home flex-grow-1 d-flex flex-column align-items-center justify-content-center">
-    <div class="home-card p-5 bg-white rounded elevation-3">
-      <img src="https://bcw.blob.core.windows.net/public/img/8600856373152463" alt="CodeWorks Logo" class="rounded-circle">
-      <h1 class="my-5 bg-dark text-white p-3 rounded text-center">
-        Vue 3 Starter
-      </h1>
+  <div class="container-fluid">
+    <div class="row h-60">
+      <div class="col-md-12"></div>
+    </div>
+    <div class="row">
+      <div class="scrollcards">
+        <div class="card" v-for="e in events" :key="e.id">
+          <Event :event="e" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { AppState } from "../AppState"
+import { computed, onMounted } from "vue"
+import { eventsService } from "../services/EventsService"
+import Pop from "../utils/Pop"
+import { logger } from "../utils/Logger"
 export default {
-  name: 'Home'
-}
+  name: 'Home',
+  setup() {
+    onMounted(async () => {
+      try {
+        await eventsService.getAllEvents()
+      } catch (error) {
+        Pop.toast(error.message, "error")
+        logger.error(error)
+      }
+    })
+
+    return {
+      events: computed(() => AppState.events),
+    }
+  },
+};
 </script>
 
 <style scoped lang="scss">
-.home{
-  display: grid;
-  height: 80vh;
-  place-content: center;
-  text-align: center;
-  user-select: none;
-  .home-card{
-    width: 50vw;
-    > img{
-      height: 200px;
-      max-width: 200px;
-      width: 100%;
-      object-fit: contain;
-      object-position: center;
-    }
-  }
+section {
+  margin-top: 40px;
+}
+.card {
+  max-height: 50vh;
+  border: 2px solid red;
+  margin: 10px 4px;
+  transition: 0.6s ease;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.card-block {
+  padding: 10px;
+}
+
+.scrollcards {
+  background-color: #fff;
+  overflow: auto;
+  white-space: nowrap;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+  background: transparent;
+}
+
+div.scrollcards .card {
+  display: inline-block;
+  padding: 14px;
+  text-decoration: none;
+  height: auto;
+  width: 500px;
 }
 </style>
