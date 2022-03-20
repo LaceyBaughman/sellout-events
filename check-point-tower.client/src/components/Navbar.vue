@@ -1,32 +1,31 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
     <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }">
-      <div class="d-flex flex-column align-items-center">
-        <img alt="logo" src="../assets/img/cw-logo.png" height="45" />
+      <div class="d-flex flex-column align-items-center mx-3">
+        <h1 class="logo">Sellout</h1>
       </div>
     </router-link>
     <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarText"
-      aria-controls="navbarText"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
+      title="Create Car"
+      class="
+        create-btn
+        btn btn-success
+        rounded-pill
+        shadow
+        d-flex
+        align-items-center
+        justify-content-center
+      "
+      data-bs-toggle="modal"
+      data-bs-target="#form-modal"
     >
-      <span class="navbar-toggler-icon" />
+      <h2>
+        Create Event
+        <i class="mdi mdi-plus"></i>
+      </h2>
     </button>
     <div class="collapse navbar-collapse" id="navbarText">
-      <ul class="navbar-nav me-auto">
-        <li>
-          <router-link
-            :to="{ name: 'About' }"
-            class="btn text-success lighten-30 selectable text-uppercase"
-          >
-            About
-          </router-link>
-        </li>
-      </ul>
+      <ul class="navbar-nav me-auto"></ul>
       <!-- LOGIN COMPONENT HERE -->
       <Login />
     </div>
@@ -52,5 +51,9 @@ a:hover {
   border-bottom: 2px solid var(--bs-success);
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
+}
+.logo {
+  font-family: "Bebas Neue", cursive;
+  font-size: 5em;
 }
 </style>

@@ -10,23 +10,32 @@
               alt="..."
             />
           </div>
-          <div class="col-md-8 p-4">
+          <div class="col-md-4 p-4">
             <div class="card-body">
               <h5 class="card-title py-2">
-                {{ event.name }} || {{ event.location }}
+                {{ event.name }} {{ event.location }} ||
+                {{ event.startDate }}
               </h5>
 
-              <p class="card-text">
-                {{ event.description }} {{ event.type }} |
-                {{ event.isCanceled }}
+              <p class="card-text scroller">
+                {{ event.description }}
               </p>
 
-              <p class="card-text">
+              <p class="card-text" v-if="event.isCanceled">
+                <small class="text-muted">
+                  <img src="https://image.pngaaa.com/788/1603788-small.png" />
+                </small>
+              </p>
+              <p class="card-text" v-else>
                 <small class="text-muted"
-                  >{{ event.startDate }} | {{ event.capacity }}</small
+                  ><b>Event Capacity:</b> {{ event.capacity }}
+                  <b>Event Type:</b> {{ event.type }}</small
                 >
               </p>
             </div>
+          </div>
+          <div class="col-md-4 scroller" v-for="c in comments" :key="c.id">
+            <Comment :comment="c" />
           </div>
         </div>
       </div>
@@ -53,6 +62,7 @@ export default {
         // NOTE this first line is only to get rid of the previous car from showing up for half a second as we pick a new active car. not required to work.
         AppState.activeEvent = {};
         await eventsService.getEventById(route.params.id);
+        await commentService.getEventComments()
         // await bidsService.getCarBids(route.params.id);
       } catch (error) {
         logger.log(error);
@@ -91,5 +101,21 @@ export default {
 <style scoped>
 .cover-img {
   max-width: 300px;
+}
+
+.scroller {
+  overflow-y: scroll;
+  scrollbar-color: rebeccapurple green;
+  scrollbar-width: thin;
+}
+
+.ellipsis {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.card-img-top {
+  max-height: 300px;
 }
 </style>

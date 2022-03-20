@@ -1,4 +1,5 @@
 import { AppState } from "../AppState"
+import { logger } from "../utils/Logger"
 import { api } from "./AxiosService"
 
 
@@ -13,10 +14,10 @@ class EventsService {
     AppState.activeEvent = res.data
   }
 
-  async filterEvents(query) {
-    const res = await api(`api/events/?query=${query}`)
-    console.log('filter post res', res)
-    AppState.events = res.data.events
+  async filterEvents(type) {
+    const res = await api.get(type)
+    logger.log('[EventServ: Filter]', res.data)
+    AppState.type = res.data.events.type
   }
 }
 

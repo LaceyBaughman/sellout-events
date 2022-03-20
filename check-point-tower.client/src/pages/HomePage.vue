@@ -1,4 +1,11 @@
-<template></template>
+<template>
+  <div class="container-fluid">
+    <Modal>
+      <template #modal-title class="bg-primary">Create Event</template>
+      <template #modal-body><EventForm /></template>
+    </Modal>
+  </div>
+</template>
 
 <script>
 import { AppState } from "../AppState"
