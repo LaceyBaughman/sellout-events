@@ -14,7 +14,7 @@ class EventsService {
   }
 
   async getEventsById(id) {
-    const eventById = await dbContext.Events.findById(id).populate('creator', 'name')
+    const eventById = await dbContext.Events.findById(id)
     if (!eventById) {
       throw new BadRequest('Invalid Id')
     }

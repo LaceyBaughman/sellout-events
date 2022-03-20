@@ -1,17 +1,4 @@
-<template>
-  <div class="container-fluid">
-    <div class="row h-60">
-      <div class="col-md-12"></div>
-    </div>
-    <div class="row">
-      <div class="scrollcards">
-        <div class="card" v-for="e in events" :key="e.id">
-          <Event :event="e" />
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
+<template></template>
 
 <script>
 import { AppState } from "../AppState"
@@ -22,19 +9,7 @@ import { logger } from "../utils/Logger"
 export default {
   name: 'Home',
   setup() {
-    onMounted(async () => {
-      try {
-        await eventsService.getAllEvents()
-      } catch (error) {
-        Pop.toast(error.message, "error")
-        logger.error(error)
-      }
-    })
-
-    return {
-      events: computed(() => AppState.events),
-    }
-  },
+  }
 };
 </script>
 

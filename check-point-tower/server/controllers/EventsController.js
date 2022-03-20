@@ -41,10 +41,10 @@ export class EventsController extends BaseController {
 
   async getEventsById(req, res, next) {
     try {
-      req.body.creatorId = req.userInfo.id
-      req.body.id = req.params.id
-      const eventsById = await eventsService.getEventsById(req.params.id)
-      res.send(eventsById)
+      // req.body.creatorId = req.userInfo.id
+      // req.body.id = req.params.id
+      const eventById = await eventsService.getEventsById(req.params.id)
+      res.send(eventById)
     } catch (error) {
       next(error)
     }
