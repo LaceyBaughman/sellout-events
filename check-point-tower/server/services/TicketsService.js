@@ -9,6 +9,7 @@ class TicketsService {
     return newTicket
   }
 
+  async
   async getMyTickets(query) {
     const myTickets = await dbContext.Tickets.find(query).populate('event')
     return myTickets.map(mongooseDocument => {

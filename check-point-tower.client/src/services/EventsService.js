@@ -21,17 +21,6 @@ class EventsService {
   }
 }
 
-// async create(carData) {
-//   const res = await api.post('api/cars', carData)
-//   AppState.cars.push(res.data)
-//   // NOTE returns car to the form so you can push from there
-//   return res.data
-// }
-
-// async update(carData) {
-//   const res = await api.put('api/cars/' + carData.id, carData)
-//   AppState.activeCar = res.data
-// }
 
 
 export const eventsService = new EventsService()

@@ -1,10 +1,5 @@
 <template>
-  <div class="container-fluid">
-    <Modal>
-      <template #modal-title class="bg-primary">Create Event</template>
-      <template #modal-body><EventForm /></template>
-    </Modal>
-  </div>
+  <div class="container-fluid"></div>
 </template>
 
 <script>

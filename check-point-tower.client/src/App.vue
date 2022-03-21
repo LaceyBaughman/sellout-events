@@ -4,6 +4,10 @@
   </header>
   <main>
     <router-view />
+    <Modal>
+      <template #modal-title class="bg-primary">Create Event</template>
+      <template #modal-body><EventForm /></template>
+    </Modal>
   </main>
   <footer>
     <div class="row">

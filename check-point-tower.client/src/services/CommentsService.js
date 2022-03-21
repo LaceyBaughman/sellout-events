@@ -4,7 +4,7 @@ import { api } from "./AxiosService"
 
 
 class CommentsService {
-  async getAll() {
+  async getEventComments(id) {
     const res = await api.get(`api/events/${id}/comments`)
     console.log(res.data);
     ProxyState.comments = res.data.map(c => new Comment(c))

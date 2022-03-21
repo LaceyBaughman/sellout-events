@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="row align-content-center bg-light shadow p-4 mt-5">
+    <div class="row align-content-center shadow p-4 mt-5">
       <div class="card px-0">
         <div class="row px-0 g-0">
           <div class="col-md-4">
@@ -52,6 +52,7 @@ import Pop from "../utils/Pop";
 import { eventsService } from "../services/EventsService";
 // import { bidsService } from "../services/BidsService";
 import { useRoute } from "vue-router";
+import { commentsService } from "../services/CommentsService";
 // import { Modal } from "bootstrap";
 export default {
   name: "EventDetails",
@@ -61,8 +62,9 @@ export default {
       try {
         // NOTE this first line is only to get rid of the previous car from showing up for half a second as we pick a new active car. not required to work.
         AppState.activeEvent = {};
+        const eventId = AppState.events.id
         await eventsService.getEventById(route.params.id);
-        await commentService.getEventComments()
+        await commentsService.getEventComments(route.params.id)
         // await bidsService.getCarBids(route.params.id);
       } catch (error) {
         logger.log(error);
