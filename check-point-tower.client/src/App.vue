@@ -11,66 +11,6 @@
   </main>
   <footer>
     <div class="row">
-      <div class="co-md-12 d-flex justify-content-around">
-        <button
-          class="
-            create-btn
-            btn btn-success
-            rounded-pill
-            shadow
-            d-flex
-            align-items-center
-            justify-content-center
-          "
-          @click="filterEvents('concert')"
-        >
-          Concerts
-        </button>
-        <button
-          class="
-            create-btn
-            btn btn-success
-            rounded-pill
-            shadow
-            d-flex
-            align-items-center
-            justify-content-center
-          "
-          @click="filterEvents('convention')"
-        >
-          Conventions
-        </button>
-        <button
-          class="
-            create-btn
-            btn btn-success
-            rounded-pill
-            shadow
-            d-flex
-            align-items-center
-            justify-content-center
-          "
-          @click="filterEvents('sport')"
-        >
-          Sports
-        </button>
-        <button
-          class="
-            create-btn
-            btn btn-success
-            rounded-pill
-            shadow
-            d-flex
-            align-items-center
-            justify-content-center
-          "
-          @click="filterEvents('digital')"
-        >
-          Digital
-        </button>
-      </div>
-    </div>
-    <div class="row">
       <div class="scrollcards">
         <div class="card" v-for="e in events" :key="e.id">
           <Event :event="e" />
@@ -93,7 +33,7 @@ import { useRouter } from "vue-router"
 export default {
   name: 'App',
   setup() {
-    const searchTerm = ref('');
+
     const router = useRouter()
     onMounted(async () => {
       try {
@@ -107,17 +47,6 @@ export default {
 
     return {
       events: computed(() => AppState.events),
-      type: computed(() => Appstate.events.type),
-      searchTerm,
-      async filterEvents(type) {
-        try {
-          await eventsService.filterEvents(type);
-        } catch (error) {
-          logger.error("[Filter]", error);
-          Pop.toast(error.message, "error");
-        }
-      },
-      searchTerm,
     }
   },
 }

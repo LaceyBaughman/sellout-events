@@ -6,7 +6,7 @@
       </div>
     </router-link>
     <button
-      title="Create Car"
+      title="Create Event"
       class="
         create-btn
         btn btn-success
@@ -19,10 +19,78 @@
       data-bs-toggle="modal"
       data-bs-target="#form-modal"
     >
-      <h2>
-        Create Event
-        <i class="mdi mdi-plus"></i>
-      </h2>
+      Create Event
+      <i class="mdi mdi-plus"></i>
+    </button>
+    <button
+      class="
+        create-btn
+        btn btn-success
+        rounded-pill
+        shadow
+        d-flex
+        align-items-center
+        justify-content-center
+      "
+      @click="resetEvents()"
+    >
+      All Events
+    </button>
+    <button
+      class="
+        create-btn
+        btn btn-success
+        rounded-pill
+        shadow
+        d-flex
+        align-items-center
+        justify-content-center
+      "
+      @click="filterEvents('concert')"
+    >
+      Concerts
+    </button>
+    <button
+      class="
+        create-btn
+        btn btn-success
+        rounded-pill
+        shadow
+        d-flex
+        align-items-center
+        justify-content-center
+      "
+      @click="filterEvents('convention')"
+    >
+      Conventions
+    </button>
+    <button
+      class="
+        create-btn
+        btn btn-success
+        rounded-pill
+        shadow
+        d-flex
+        align-items-center
+        justify-content-center
+      "
+      @click="filterEvents('sport')"
+    >
+      Sports
+    </button>
+    <button
+      class="
+        create-btn
+        btn btn-success
+        rounded-pill
+        shadow
+        d-flex
+        align-items-center
+        justify-content-center
+      "
+      @click="filterEvents('digital')"
+    >
+      Digital
     </button>
     <div class="collapse navbar-collapse" id="navbarText">
       <ul class="navbar-nav me-auto"></ul>
@@ -33,10 +101,38 @@
 </template>
 
 <script>
+import { computed } from "@vue/reactivity";
+import { AppState } from "../AppState";
+import { eventsService } from "../services/EventsService";
+import { logger } from "../utils/Logger";
+import Pop from "../utils/Pop";
+
 export default {
+
   setup() {
-    return {};
-  },
+    return {
+      events: computed(() => AppState.events),
+      types: computed(() => AppState.events.type),
+
+      filterEvents(type) {
+        // try {
+        const eventType = AppState.events.filter(e => e.type == type)
+        // } catch (error) {
+        //   logger.error("[Filter]", eventType);
+        //   Pop.toast(error.message, "error");
+        AppState.events.types = eventType
+      },
+      async resetEvents() {
+        try {
+          await eventsService.getAllEvents()
+        } catch (error) {
+          logger.log("[ResetEvents]")
+          Pop.toast(error.message, 'error')
+
+        }
+      }
+    }
+  }
 };
 </script>
 

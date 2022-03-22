@@ -1,22 +1,27 @@
 <template>
   <div class="container">
-    <div class="row align-content-center shadow p-4 mt-5">
-      <div class="card px-0">
-        <div class="row px-0 g-0">
-          <div class="col-md-4">
+    <div class="row justify-content-between shadow p-2 m-4">
+      <div class="col-md-12">
+        <div class="row">
+          <h3 class="card-title py-2">
+            {{ event.name }}, {{ event.location }}
+
+            <div v-if="event.creatorId == account.id && !event.isCanceled">
+              <button class="btn btn-secondary" @click="openModal">
+                <i class="mdi mdi-pencil"></i>
+              </button>
+            </div>
+          </h3>
+
+          <div class="col-md-5">
             <img
               :src="event.coverImg"
               class="img-fluid rounded-start"
               alt="..."
             />
           </div>
-          <div class="col-md-4 p-4">
+          <div class="col-md-5 p-2">
             <div class="card-body">
-              <h5 class="card-title py-2">
-                {{ event.name }} {{ event.location }} ||
-                {{ event.startDate }}
-              </h5>
-
               <p class="card-text scroller">
                 {{ event.description }}
               </p>
@@ -29,12 +34,14 @@
               <p class="card-text" v-else>
                 <small class="text-muted"
                   ><b>Event Capacity:</b> {{ event.capacity }}
-                  <b>Event Type:</b> {{ event.type }}</small
+                  <b>Event Type:</b> {{ event.type }}
+                  <p><b>Event Date:</b> {{ event.startDate }}</p></small
                 >
               </p>
             </div>
           </div>
-          <div class="col-md-4 scroller" v-for="c in comments" :key="c.id">
+
+          <div class="col-md-4" v-for="c in comments" :key="c.id">
             <Comment :comment="c" />
           </div>
         </div>
@@ -50,7 +57,6 @@ import { computed, onMounted } from "vue";
 import { logger } from "../utils/Logger";
 import Pop from "../utils/Pop";
 import { eventsService } from "../services/EventsService";
-import { ticketsService } from "../services/ticketsService";
 import { useRoute } from "vue-router";
 import { commentsService } from "../services/CommentsService";
 
@@ -61,11 +67,9 @@ export default {
     onMounted(async () => {
       try {
 
-        AppState.activeEvent = {};
-        const eventId = AppState.events.id
         await eventsService.getEventById(route.params.id);
         await commentsService.getEventComments(route.params.id)
-        await ticketsService.getEventTickets(route.params.id);
+        await eventsService.getEventTickets(route.params.id);
       } catch (error) {
         logger.log(error);
         Pop.toast(error.message, "error");
@@ -76,7 +80,7 @@ export default {
       event: computed(() => AppState.activeEvent),
       tickets: computed(() => AppState.tickets.sort((a, b) => b.capacity - a.capacity)),
       comments: computed(() => AppState.comments),
-      hasTicket: computed(() => AppState.tickets.find((b) => b.id == AppState.account.id)),
+      hasTicket: computed(() => AppState.tickets.find((a) => a.id == AppState.account.id)),
 
 
       createTicket() {
@@ -94,7 +98,7 @@ export default {
 
 <style scoped>
 .cover-img {
-  max-width: 300px;
+  max-width: 200px;
 }
 
 .scroller {

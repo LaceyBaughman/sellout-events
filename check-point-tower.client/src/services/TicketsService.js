@@ -3,7 +3,7 @@ import { logger } from "../utils/Logger"
 import { api } from "./AxiosService"
 
 
-class EventsService {
+class TicketsService {
   async getAllEvents() {
     const res = await api.get('api/events')
     AppState.events = res.data
@@ -55,4 +55,4 @@ class EventsService {
 
 
 
-export const eventsService = new EventsService()
+export const ticketsService = new TicketsService()

@@ -1,5 +1,13 @@
 <template>
-  <div class="container-fluid"></div>
+  <div class="container-fluid">
+    <!-- <div class="row">
+      <div class="scrollcards">
+        <div class="card" v-for="t in types" :key="t.id">
+          <Event :types="t" />
+        </div>
+      </div>
+    </div> -->
+  </div>
 </template>
 
 <script>
@@ -11,8 +19,21 @@ import { logger } from "../utils/Logger"
 export default {
   name: 'Home',
   setup() {
+    // onMounted(async () => {
+    //   try {
+    //     await eventsService.getAllEvents()
+    //   } catch (error) {
+    //     logger.error(error)
+    //     Pop.toast(error.message, 'Error')
+    //   }
+    // })
+
+    return {
+      events: computed(() => AppState.events),
+      types: computed(() => AppState.types),
+    }
   }
-};
+}
 </script>
 
 <style scoped lang="scss">

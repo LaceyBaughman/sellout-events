@@ -4,19 +4,19 @@
       <div class="form-group flex-grow-1">
         <label for="type" class="">Event Type:</label>
         <select
-          v-model="editable.name"
-          name="name"
-          id="name"
+          v-model="editable.type"
+          name="type"
+          id="type"
           required
           class="form-control"
         >
           <option disabled :selected="!editable.id" value="">
-            Please Choose type of Event:
+            List of event types:
           </option>
-          <option>Concert</option>
-          <option>Convention</option>
-          <option>Sport</option>
-          <option>Digital</option>
+          <option>concert</option>
+          <option>convention</option>
+          <option>sport</option>
+          <option>digital</option>
         </select>
       </div>
       <div class="form-group flex-grow-1 ms-3">
@@ -42,8 +42,8 @@
           class="form-control"
           name="capacity"
           id="capacity"
-          min="1"
-          max="9999999"
+          min="10"
+          max="1000"
         />
       </div>
       <div class="form-group mx-3">
@@ -51,7 +51,7 @@
         <input
           v-model="editable.startDate"
           placeholder="startDate"
-          type="startDate"
+          type="Date"
           class="form-control"
           name="startDate"
           id="startDate"
@@ -100,7 +100,7 @@
         aria-label="Close"
         class="btn text-dark lighten-20 text-uppercase selectable"
       >
-        <b> cancel </b>
+        <b> Cancel </b>
       </button>
       <button
         v-if="!eventData.id"
@@ -149,8 +149,7 @@ export default {
       editable,
       async createEvent() {
         try {
-          logger.log(editable.value)
-          let newEvent = await eventsService.create(editable.value)
+          let newEvent = await eventsService.createEvent(editable.value)
           editable.value = {}
           Modal.getOrCreateInstance(
             document.getElementById("form-modal")
