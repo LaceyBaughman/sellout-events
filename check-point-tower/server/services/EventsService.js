@@ -13,7 +13,7 @@ class EventsService {
     return allEvents
   }
 
-  async getEventsById(id) {
+  async getEventById(id) {
     const eventById = await dbContext.Events.findById(id)
     if (!eventById) {
       throw new BadRequest('Invalid Id')
@@ -21,28 +21,33 @@ class EventsService {
     return eventById
   }
 
-  async editEvent(body) {
-    const originalEvent = await dbContext.Events.findById(body.id)
-    if (originalEvent.creatorId.toString() !== body.creatorId) {
-      throw new BadRequest('Unable To edit Task.')
+  async editEvent(update) {
+    // const originalEvent = await dbContext.Events.findById(body.id)
+    const originalEvent = await this.getEventById(update.id)
+    if (originalEvent.creatorId.toString() !== update.creatorId) {
+      throw new BadRequest('Only the event creator can edit this event')
     }
-    originalEvent.name = body.name || originalEvent.name
-    originalEvent.description = body.description || originalEvent.description
-    originalEvent.location = body.location || originalEvent.location
-    originalEvent.capacity = body.capacity || originalEvent.capacity
-    originalEvent.startDate = body.startDate || originalEvent.startDate
-    originalEvent.type = body.type || originalEvent.type
-
-    await originalEvent.save()
+    originalEvent.name = update.name ? update.name : originalEvent.name
+    originalEvent.description = update.description ? update.description : originalEvent.description
+    originalEvent.location = update.location ? update.location : originalEvent.location
+    originalEvent.capacity = update.capacity ? update.capacity : originalEvent.capacity
+    originalEvent.startDate = update.startDate ? update.startDate : originalEvent.startDate
+    originalEvent.type = update.type ? update.type : originalEvent.type
+    await originalEvent.save({ runValidators: true })
     await originalEvent.populate('creator', 'name')
     return originalEvent
   }
 
   async softCancel(id) {
-    const originalEvent = await dbContext.Events.findById(id)
-    originalEvent.isCanceled = !originalEvent.isCanceled
-    await originalEvent.save()
-    return originalEvent.isCanceled ? 'Canceled' : 'UnCanceled'
+    // const event = await dbContext.Events.findById(id)
+    const event = await eventsService.getEventById(id)
+    if (event.isCanceled === !event.isCanceled) {
+      throw new BadRequest('Sorry! This event is already canceled!')
+    }
+    event.isCanceled = !event.isCanceled
+    await event.save()
+    await event.populate('creator', 'name')
+    return event
   }
 }
 export const eventsService = new EventsService()

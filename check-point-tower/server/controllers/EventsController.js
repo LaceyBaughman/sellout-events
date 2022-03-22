@@ -1,4 +1,3 @@
-
 import { Auth0Provider } from '@bcwdev/auth0provider'
 import { commentsService } from '../services/CommentsService'
 import { eventsService } from '../services/EventsService'
@@ -11,13 +10,13 @@ export class EventsController extends BaseController {
     super('api/events')
     this.router
       .get('', this.getAllEvents)
-      .get('/:id', this.getEventsById)
+      .get('/:id', this.getEventById)
+      .get('/:id/comments', this.getEventComments)
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post('', this.createEvent)
       .put('/:id', this.editEvent)
       .delete('/:id', this.softCancel)
       .get('/:id/tickets', this.getEventTickets)
-      .get('/:id/comments', this.getEventComments)
   }
 
   async createEvent(req, res, next) {
@@ -39,11 +38,9 @@ export class EventsController extends BaseController {
     }
   }
 
-  async getEventsById(req, res, next) {
+  async getEventById(req, res, next) {
     try {
-      // req.body.creatorId = req.userInfo.id
-      // req.body.id = req.params.id
-      const eventById = await eventsService.getEventsById(req.params.id)
+      const eventById = await eventsService.getEventById(req.params.id)
       res.send(eventById)
     } catch (error) {
       next(error)

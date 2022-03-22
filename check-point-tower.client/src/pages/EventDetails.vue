@@ -50,22 +50,22 @@ import { computed, onMounted } from "vue";
 import { logger } from "../utils/Logger";
 import Pop from "../utils/Pop";
 import { eventsService } from "../services/EventsService";
-// import { bidsService } from "../services/BidsService";
+import { ticketsService } from "../services/ticketsService";
 import { useRoute } from "vue-router";
 import { commentsService } from "../services/CommentsService";
-// import { Modal } from "bootstrap";
+
 export default {
   name: "EventDetails",
   setup() {
     const route = useRoute();
     onMounted(async () => {
       try {
-        // NOTE this first line is only to get rid of the previous car from showing up for half a second as we pick a new active car. not required to work.
+
         AppState.activeEvent = {};
         const eventId = AppState.events.id
         await eventsService.getEventById(route.params.id);
         await commentsService.getEventComments(route.params.id)
-        // await bidsService.getCarBids(route.params.id);
+        await ticketsService.getEventTickets(route.params.id);
       } catch (error) {
         logger.log(error);
         Pop.toast(error.message, "error");
@@ -74,26 +74,18 @@ export default {
     return {
       events: computed(() => AppState.events),
       event: computed(() => AppState.activeEvent),
-      //     bids: computed(() => AppState.bids.sort((a, b) => b.amount - a.amount)),
+      tickets: computed(() => AppState.tickets.sort((a, b) => b.capacity - a.capacity)),
+      comments: computed(() => AppState.comments),
+      hasTicket: computed(() => AppState.tickets.find((b) => b.id == AppState.account.id)),
 
-      //     hasBid: computed(() =>
-      //       AppState.bids.find((b) => b.id == AppState.account.id)
-      //     ),
-      //     createBid() {
 
-      //       let newBid = {
-      //         accountId: AppState.account.id,
-      //         carId: AppState.activeCar.id,
-      //         amount: AppState.activeCar.price + 100,
-      //       };
-      //       bidsService.createBid(newBid);
-      //     },
-      //     openModal() {
-      //       Modal.getOrCreateInstance(document.getElementById("form-modal")).show();
-      //     },
-      //     formatNumber(num) {
-      //       const iNF = new Intl.NumberFormat("en-US");
-      //       return iNF.format(num);
+      createTicket() {
+        let myTicket = {
+          accountId: AppState.account.id,
+          eventId: Appstate.activeEvent.id,
+          capacity: AppState.activeEvent.capacity - 1,
+        }
+      },
     }
   }
 }
